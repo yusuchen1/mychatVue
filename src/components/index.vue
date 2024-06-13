@@ -11,8 +11,8 @@
 <script setup>
 import {ref,reactive,defineProps} from 'vue';
 
-    const props = defineProps(['marginTop','marginLeft']);
-    const cardContext = ref("margin-top:"+props.marginTop+";margin-left:"+props.marginLeft)
+    const props = defineProps(['top','marginLeft']);
+    const cardContext = ref("position: relative;top:"+props.top+";margin-left:"+props.marginLeft)
     const shadow = reactive({
         name:'Basic Shadow',
         type: ''
@@ -25,6 +25,7 @@ import {ref,reactive,defineProps} from 'vue';
 .card {
     width: 600px;
     height: 400px;
-    margin-left: 300px;
+    margin-left:  30%;
+    margin-top:  10%;
 }
 </style>

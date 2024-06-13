@@ -25,3 +25,15 @@ export function register(registerUser){
         }
     })
 }
+
+export function searchUser(key,page,size){
+    return request({
+        url:"/user/searchUser",
+        method:'GET',
+        params:{
+            key,
+            page,
+            size
+        }
+    })
+}

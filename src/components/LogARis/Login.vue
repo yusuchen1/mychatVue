@@ -1,5 +1,5 @@
 <template>
-    <Index marginTop="20%" marginLeft="30%">
+    <Index top="25%" marginLeft="30%">
         <el-form class="elf240" v-model="loginUser" .label-width="auto">
             <el-form-item label="账号">
                 <el-input v-model="loginUser.username" style-width="150px" placeholder="请输入账号" />
@@ -22,6 +22,7 @@
     import {login} from '../../api/user.js';
     import {success,info,warning,error} from '../../assets/message.js';
     import {useStore} from 'vuex';
+    import {init} from '../../js/webSocket.js'
 
     const store = useStore();
 
@@ -40,10 +41,10 @@
             console.log(resp.data);
             if(resp.data.code == 24200){
                 success(resp.data.message);
-                console.log(resp.data.data)
-                console.log(computed(() => store.state.jwt).value)
-                store.commit('setJwt', resp.data.data);
-                console.log(computed(() => store.state.jwt).value)
+                console.log(resp.data)
+                sessionStorage.setItem('jwt',resp.data.data)
+                init();
+                router.push('/home');
             }else{
                 error(resp.data.message);
             }

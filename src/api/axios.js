@@ -1,5 +1,4 @@
 import axios from 'axios'
-import store from '../store'
 import router from '../router'
 import {error} from '../assets/message.js'
 
@@ -10,7 +9,7 @@ const request = axios.create({
 
 request.interceptors.request.use(
     config => {
-        const jwt = store.state.jwt
+        const jwt = sessionStorage.getItem('jwt')
         if(jwt != ''){
             config.headers.token = jwt;
         }

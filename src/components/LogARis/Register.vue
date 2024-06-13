@@ -1,5 +1,5 @@
 <template>
-    <Index marginLeft="20%" marginTop="5%">
+    <Index marginLeft="20%" top="5%">
         <el-form v-model="registerUser" .label-width="auto" max-width="480px">
             <el-form-item class="elfi" label="账&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp号">
                 <el-input placeholder="请输入账号" v-model.lazy="registerUser.username"/>
@@ -58,7 +58,7 @@ import {success,error} from '../../assets/message.js'
         console.log(registerUser);
         register(registerUser).then(resp => {
             console.log(resp.data);
-            if(reso.data.code == 24200){
+            if(resp.data.code == 24200){
                 success(resp.data.message);
                 router.push('/login')
             }else{

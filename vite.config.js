@@ -21,6 +21,12 @@ export default defineConfig({
         changeOrigin:true,
         rewrite:(path)=>path.replace(/^\/api/,'')
       }
+      // ,
+      // '/wssapi':{
+      //   target:'wss://localhost:8080',
+      //   changeOrigin:true,
+      //   rewrite:(path)=>path.replace(/^\/api/,'')
+      // }
     }
     
   },
