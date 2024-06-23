@@ -37,3 +37,44 @@ export function searchUser(key,page,size){
         }
     })
 }
+
+export function getOtherInfo(uid){
+    return request({
+        url:"/user/getOtherInfo",
+        method:'GET',
+        params:{uid}
+    })
+}
+
+export function getAvatar(){
+    return request({
+        url:'/user/getAvatar',
+        method:'GET',
+    })
+}
+
+export function getUserInfo(){
+    return request({
+        url:'/user/getUserInfo',
+        method:'GET',
+    })
+}
+
+export function updateUserInfo(data){
+    return request({
+        url:'/user/updateUserInfo',
+        method:'PUT',
+        data
+    })
+}
+
+export function updatePassword(data){
+    return request({
+        url:'/user/updatePassword',
+        method:'PUT',
+        data:{
+            oldPassword:data.oldPassword,
+            newPassword:data.newPassword
+        }
+    })
+}

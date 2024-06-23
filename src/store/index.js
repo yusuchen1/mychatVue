@@ -1,5 +1,6 @@
 import {createStore} from 'vuex'
 import {selectChat,selectGroupChat} from '../api/chat.js'
+import { reactive } from 'vue';
 
 const store = createStore({
     state:{
@@ -149,9 +150,30 @@ const store = createStore({
         },
         nowChatId:'',
         defaultDialogVisible:false,
+        smallDialogVisible:false,
+        smallDialogTVisible:false,
         rid:'',
         gid:'',
         ws:'',
+        defaultDrawerVisible:false,
+        otherInfo:{
+        },
+        userMessage:{},
+        avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
+        defaultDialogIndex:0,
+        // 2修改密码 3管理好友组 4群聊信息 5菜单群聊信息 6编辑群聊信息
+        smallDialogIndex:0,
+        // 1群聊管理
+        smallDialogTIndex:0,
+        defaultDrawerIndex:0,
+        userInfo:{},
+        groupInfo:{
+            avatar:'',
+            number:'',
+            name:'',
+            makeUsername:''
+        },
+        groupMembers:[]
     },
     mutations: {
         setJwt:(state,jwt) => {
@@ -162,6 +184,13 @@ const store = createStore({
         },
         reverseDefaultDialogVisible:(state) => {
             state.defaultDialogVisible = !state.defaultDialogVisible;
+        },reverseSmallDialogVisible:(state) => {
+            state.smallDialogVisible = !state.smallDialogVisible;
+        },reverseSmallDialogTVisible:(state) => {
+            state.smallDialogTVisible = !state.smallDialogTVisible;
+        },
+        reverseDefaultDrawerVisible:(state) => {
+            state.defaultDrawerVisible = !state.defaultDrawerVisible;
         },
         setChats:(state,Lchats) => {
             if(Lchats.gid == null){
@@ -193,6 +222,116 @@ const store = createStore({
         },
         setNowChatId:(state,id) => {
             state.nowChatId = id;
+        },
+        setOtherInfo:(state,otherInfo) =>{
+            state.otherInfo = otherInfo;
+        },
+        setAvatar :(state,avatar) => {
+            state.avatar = avatar;
+        },
+        setUserInfo:(state,userInfo) =>{
+            state.userInfo = userInfo;
+        },
+        updateOtherInfoCronyGroupId: (state,CronyGroupId) =>{
+            state.otherInfo.cronyGroupId = CronyGroupId
+        },
+        updateOtherInfoCronyGroupVOS: (state,CronyGroupVOS) =>{
+            state.otherInfo.cronyGroupVOS = CronyGroupVOS
+        },updateOtherInfoGroupInput: (state,groupInput) =>{
+            state.otherInfo.groupInput = groupInput
+        },
+        updateUserInfoAvatar: (state,avatar) =>{
+            state.userInfo.avatar = avatar;
+        },
+        setUserMessage:(state,userMessage) =>{
+            state.userMessage = userMessage;
+        },
+        setGroupInfo:(state,groupInfo) =>{
+            state.groupInfo = groupInfo;
+        },
+        removeUserMessageByAskid:(state,askid) =>{
+            console.log(state.userMessage)
+            state.userMessage = state.userMessage.filter(function(item){
+                console.log(item.askId)
+                console.log(askid)
+                return item.askId != askid;
+            })
+            console.log("删除后")
+            console.log(state.userMessage)
+        },
+        updateCronyInfo:(state,info) =>{
+            const cg = state.leftMenuList.cronyGroups
+            let crony = reactive({});
+            cg.forEach((item1) => {
+                item1.cronys = item1.cronys.filter(item2 => {
+                    if(item2.id == info.cronyId){
+                        // 更新左菜单的昵称
+                        item2.name = info.description;
+                        // 更新聊天界面的昵称
+                        item2.chats.forEach(item3 => {
+                            if(!item3.me){
+                                item3.nickname = info.description;
+                            }
+                        })
+                        // 备份这个item然后删除移位
+                        crony = item2;
+                        return false;
+                    }
+                    return true;
+                })
+                console.log(item1);
+            })
+            //在更新后的数组中插入更新的好友
+            cg.forEach(item => {
+                if(item.groupName == info.cronyGroupName){
+                    item.cronys.push(crony)
+                }
+            })
+        },
+        setDefaultDialogIndex:(state,index) => {
+            state.defaultDialogIndex = index;
+        },setDefaultDrawerIndex:(state,index) => {
+            state.defaultDrawerIndex = index;
+        },
+        setSmallDialogIndex:(state,index) => {
+            state.smallDialogIndex = index;
+        },
+        setSmallDialogTIndex:(state,index) => {
+            state.smallDialogTIndex = index;
+        },
+        j2CronyChat:(state,id) => {
+            const cronyGroups = state.leftMenuList.cronyGroups;
+            for(let i = 0; i < cronyGroups.length;i++){
+                for(let j = 0; j <cronyGroups[i].cronys.length ;j++){
+                    if(cronyGroups[i].cronys[j].id == id){
+                        state.nowChatId = "g-"+i+"-"+id;
+                    }
+                }
+            }
+        },
+        j2GroupChat:(state,id) => {
+            const groups = state.leftMenuList.groups;
+            groups.forEach(group =>{
+                if(group.id == id){
+                    state.nowChatId = id;
+                }
+            })
+        },
+        updateLeftMenuDelCronyGroup:(state,cronyGroupName) => {
+            let cronyGroups = state.leftMenuList.cronyGroups;
+            state.leftMenuList.cronyGroups = cronyGroups.filter(item => {
+                return cronyGroupName != item.groupName;
+            })
+        },updateLeftMenuDelCrony:(state,cronyId) => {
+            let cronyGroups = state.leftMenuList.cronyGroups;
+            for(let i = 0;i < cronyGroups.length; i++){
+                state.leftMenuList.cronyGroups[i].cronys = cronyGroups[i].cronys.filter(item => {
+                    console.log(item.id,cronyId)
+                    return item.id != cronyId
+                });
+            }
+        },updateLeftMenuDelGroup:(state, gid) => {
+            state.leftMenuList.groups = state.leftMenuList.groups.filter(group => group.id != gid);
         }
     },
     actions: {
@@ -214,13 +353,13 @@ const store = createStore({
                     resolve(resp.data)
                 }).catch(err => reject(err))
             })
-        },
+        }
     },
     getters:{
         getChats:(state) => {
             const nowChatId = state.nowChatId;
             console.log("nowChatId:"+nowChatId)
-            const ids = nowChatId.split('-');
+            const ids = (nowChatId+"").split('-');
             // 说明是用户的id
             if(ids[0] == 'g'){
                 console.log("ids.length:"+ids.length)
@@ -241,7 +380,7 @@ const store = createStore({
                 for(let i = 0;i<state.leftMenuList.groups.length;i++){
                     let group = state.leftMenuList.groups[i];
                     if(group.id == gid){
-                        console.log(crony.chats)
+                        // console.log(crony.chats)
                         return group.chats;
                     }
                 }
