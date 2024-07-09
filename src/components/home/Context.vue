@@ -19,17 +19,11 @@
     </div>
     <div class="inputBlock">
         <div class="textBlock">
-            <el-input
-                v-model="mess.content"
-                style="width: 100%;height: 100%"
-                type="textarea"
-                :rows="6"
-                clearable
-            />
+            <textarea v-model="mess.content" class="chat-input" placeholder="输入消息..." @keydown="handleKeydown"></textarea>
         </div>
         <div class="operateBlock">
             <div style="float:right;margin-top: 20px;margin-right: 20px;">
-                <el-button>关闭</el-button>
+                <el-button @click="resetMess()">清空</el-button>
                 <el-button @click="sendMess()" type="primary">发送</el-button>
             </div>
         </div>
@@ -39,141 +33,146 @@
         <UserInfo />
     </DefaultDialog>
 </template>
+
 <script setup>
-import {ref,reactive,computed,watch,nextTick} from 'vue';
-import {sendMessage} from '../../api/chat.js'
-import {useStore} from 'vuex'
-import {success,error} from '../../assets/message.js'
+import { ref, reactive, computed, watch, nextTick } from 'vue';
+import { sendMessage } from '../../api/chat.js';
+import { useStore } from 'vuex';
+import { success, error } from '../../assets/message.js';
 import { JsGetOtherInfo } from '@/js/user.js';
 import UserInfo from '../UserInfo.vue';
 import DefaultDialog from '../common/DefaultDialog.vue';
 import { JsUpdataCronyInfo } from '@/js/crony.js';
 
-    const store = useStore();
-    const mess = reactive({
-        receiveUid:computed(() => store.state.rid),
-        groupId:computed(() => store.state.gid),
-        content:''
-    })
+const store = useStore();
+const mess = reactive({
+    receiveUid: computed(() => store.state.rid),
+    groupId: computed(() => store.state.gid),
+    content: ''
+});
 
-    function sendMess(){
-        if(mess.receiveUid == '' && mess.groupId == ''){
-            error("请选择你要发送的对象")
-            return;
+function sendMess() {
+    if (mess.receiveUid == '' && mess.groupId == '') {
+        error("请选择你要发送的对象");
+        return;
+    }
+    sendMessage(mess).then(resp => {
+        if (resp.data.code == 24200) {
+            success(resp.data.message);
+            mess.content = '';
+        } else {
+            error(resp.data.message);
         }
-        sendMessage(mess).then(resp => {
-            if(resp.data.code == 24200){
-                success(resp.data.message)
-                mess.content = '';
-            }else{
-                error(resp.data.message)
-            }
-        })
+    });
+}
+
+function resetMess() {
+    mess.content = '';
+}
+
+function handleKeydown(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // 阻止默认的回车行为
+        sendMess();
     }
+}
 
-    const nowChatId = computed(() => store.state.nowChatId)
-    const chats = computed(() => store.getters['getChats'])
-    const chatContainer = ref(null);
-    var oldScrollTop;
-    watch(chats,(newValue,oldValue) => {
-        const nowScrollTop = chatContainer.value.scrollTop;
-        console.log("o:"+oldScrollTop)
-        console.log("n:"+nowScrollTop)
+const nowChatId = computed(() => store.state.nowChatId);
+const chats = computed(() => store.getters['getChats']);
+const chatContainer = ref(null);
+var oldScrollTop;
+watch(chats, (newValue, oldValue) => {
+    const nowScrollTop = chatContainer.value.scrollTop;
+    console.log("o:" + oldScrollTop);
+    console.log("n:" + nowScrollTop);
 
-        nextTick(() => {
-            if((chatContainer.value && (oldScrollTop - nowScrollTop < 500)) || oldScrollTop == null){
-                const newScrollHeight = chatContainer.value.scrollHeight;
-                chatContainer.value.scrollTop = newScrollHeight;
-                oldScrollTop = chatContainer.value.scrollTop;
-            }
-        })
-    })
+    nextTick(() => {
+        if ((chatContainer.value && (oldScrollTop - nowScrollTop < 500)) || oldScrollTop == null) {
+            const newScrollHeight = chatContainer.value.scrollHeight;
+            chatContainer.value.scrollTop = newScrollHeight;
+            oldScrollTop = chatContainer.value.scrollTop;
+        }
+    });
+});
 
-    const isVisible = computed(() => store.state.defaultDialogVisible)
-    const defaultDialogIndex = computed(() => store.state.defaultDialogIndex)
-    function chatAvaClick(uid){
-        store.commit('setDefaultDialogIndex',2);
-        JsGetOtherInfo(uid);
-    }
+const isVisible = computed(() => store.state.defaultDialogVisible);
+const defaultDialogIndex = computed(() => store.state.defaultDialogIndex);
+function chatAvaClick(uid) {
+    store.commit('setDefaultDialogIndex', 2);
+    JsGetOtherInfo(uid);
+}
 </script>
+
 <style scoped>
 .chatBlock {
     width: 100%;
     height: 70%;
-    background-color: azure;
     overflow: auto;
 }
 .inputBlock {
     width: 100%;
     height: 30%;
-    background-color: aquamarine
 }
 .textBlock {
-    width:100%;
+    width: 100%;
     height: 70%;
-    background-color:white;
+    background-color: rgba(255, 255, 255, 0.205);
     position: relative;
-    top:5px;
+    top: 5px;
 }
 .operateBlock {
     width: 100%;
     height: 30%;
 }
-
-.l{
-    float:left;
+.l {
+    float: left;
 }
-
-.r{
-    float:right;
+.r {
+    float: right;
 }
-
-/* 聊天气泡的基本样式 */
+.chat-input {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 .chat-bubble {
-  max-width: 60%;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 10px;
-  position: relative;
+    max-width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    position: relative;
 }
-
-/* 发送者气泡样式 */
 .sender {
-  background-color: #5dd5f9;
+    background-color: #5dd5f9;
 }
-
-/* 接收者气泡样式 */
 .me {
-  background-color: #77ea65;
+    background-color: #77ea65;
 }
-
-/* 气泡箭头样式 */
 .bubble-arrow {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  /* border: 10px solid transparent; */
-  border-top: 8px solid transparent;
-  border-bottom: 12px solid transparent;
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 12px solid transparent;
 }
-
-/* 发送者气泡箭头 */
 .sender .bubble-arrow {
-  border-left: 15px solid transparent;
-  border-right: 15px solid #5dd5f9;
-  /* border-bottom-color: #ebebeb; */
-  left: -25px;
-  top: 5px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid #5dd5f9;
+    left: -25px;
+    top: 5px;
 }
-
-/* 接收者气泡箭头 */
 .me .bubble-arrow {
     border-left: 15px solid #77ea65;
     border-right: 15px solid transparent;
-  /* border-bottom-color: #c0def6; */
-  right: -25px;
-  top: 5px;
+    right: -25px;
+    top: 5px;
 }
-
 </style>

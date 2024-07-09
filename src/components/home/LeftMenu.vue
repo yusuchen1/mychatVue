@@ -1,7 +1,7 @@
 <template>
       <el-menu
         active-text-color="#ffd04b"
-        background-color="#545c64"
+        background-color="#027777"
         class="el-menu-vertical-demo"
         :default-active="computed(() => store.state.nowChatId)"
         text-color="#fff"
@@ -132,13 +132,31 @@ import GroupInfo from '../groupInfo.vue';
     const primaryBtClick = function(){
         store.commit('reverseSmallDialogVisible');
     }
+    
 </script>
 
 <style scoped>
+
+
+/* 针对IE, Edge和Firefox */
 .el-menu{
-    height: 100vh;
+    height: 100%;
+    overflow:auto;
+
+    -ms-overflow-style: none;  /* IE和Edge */
+    scrollbar-width: none;  /* Firefox */
 }
+
+/* 针对Chrome, Safari和Opera */
+.el-menu::-webkit-scrollbar {
+    display: none;
+}
+
+
+
 .l{
     float: left;
+    /* background-color: #027777 */
+
 }
 </style>

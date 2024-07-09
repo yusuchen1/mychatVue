@@ -80,6 +80,10 @@ import { joinGroup, searchGroup } from '@/api/group.js';
     let temp;
     function search(){
         temp = searchUserDTO.input;
+        if(temp == ''){
+            error("请输入搜索内容");
+            return;
+        }
         if(pageSelector.value == 0){
             searchUser(temp, searchUserDTO.page, searchUserDTO.size).then(resp => {
                 if(resp.data.code == 24200){

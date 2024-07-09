@@ -26,19 +26,19 @@ const store = createStore({
                         37,
                         31
                       ],
-                      "content": "爱还没来，天地间风云忽然变~",
+                      "content": "香菇掉厕所里还是香菇吗",
                       "me": false
                     },] //群最新消息
                 },
                 {
                     id:'1',
                     avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/sxc258.jpg', 
-                    name:'虾头蝻避难所', 
+                    name:'核吧', 
                     chats:[
                         {
                             "id": '1800447253547073537',
                                         "avatar": "https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg",
-                                      "nickname": "苏辰",
+                                      "nickname": "小布",
                                       "sendUid": 2,
                                       "receiveUid": 3,
                                       "groupId": null,
@@ -50,7 +50,7 @@ const store = createStore({
                                         37,
                                         31
                                       ],
-                                      "content": "有情有义的人都要回来~",
+                                      "content": "咳咳",
                                       "me": false
                         }
                     ]
@@ -80,13 +80,13 @@ const store = createStore({
                                         37,
                                         31
                                       ],
-                                      "content": "爱还没来，天地间风云忽然变~",
+                                      "content": "哪个省的",
                                       "me": false
                                     },
                                     {
                                       "id": '1800447450461278209',
                                       "avatar": "https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg",
-                                      "nickname": "懒大王",
+                                      "nickname": "丁真",
                                       "sendUid": 3,
                                       "receiveUid": 2,
                                       "groupId": null,
@@ -98,26 +98,8 @@ const store = createStore({
                                         38,
                                         18
                                       ],
-                                      "content": "有情有义的人都要回来~",
+                                      "content": "麻麻省的",
                                       "me": true
-                                    },
-                                    {
-                                      "id": '1800450583933538306',
-                                      "avatar": "https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg",
-                                      "nickname": "苏辰",
-                                      "sendUid": 2,
-                                      "receiveUid": 3,
-                                      "groupId": null,
-                                      "time": [
-                                        2024,
-                                        6,
-                                        11,
-                                        16,
-                                        50,
-                                        45
-                                      ],
-                                      "content": "爱总会来，生死注定的来世再爱~",
-                                      "me": false
                                     }
                                   ]
                         },
@@ -125,7 +107,7 @@ const store = createStore({
                         //     id:'1',
                         //     avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
                         //     name:'丁真',
-                        //     nmessage:'我槽你妈'
+                        //     nmessage:'知识学爆'
                         // }
                     ]
                 }
@@ -136,7 +118,7 @@ const store = createStore({
                 //             id:'2',
                 //             avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
                 //             name:'龟儿',
-                //             nmessage:'晚上八点街头那家店洗脚'
+                //             nmessage:'网吧'
                 //         },
                 //         {
                 //             id:'3',

@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-avatar :src="otherInfo.avatar" style="width: 200px;height: 200px;margin-left:35%;"/>
-        <el-button type="danger" v-if="otherInfo.crony" @click="smVisible = !smVisible" style="float:right;margin-top:15px">删除好友</el-button>
+        <el-button type="danger" @click="smVisible = !smVisible" style="float:right;margin-top:15px">删除好友</el-button>
           <el-descriptions style="margin-left:15%;margin-top:20px" :column="2">
             <el-descriptions-item label="用户名：">{{ otherInfo.username }}</el-descriptions-item>
             <el-descriptions-item label="昵&nbsp&nbsp&nbsp&nbsp称：">{{ otherInfo.nickname }}</el-descriptions-item>
@@ -142,6 +142,10 @@ import {JsCronyAdd, JsUpdataCronyInfo} from '@/js/crony.js'
       }
 
       function $_save(){
+        if(otherInfo.value.description == ''){
+          error('备注不能为空，请重新填写');
+          return;
+        }
         JsUpdataCronyInfo()
         store.commit("reverseDefaultDialogVisible")
     }

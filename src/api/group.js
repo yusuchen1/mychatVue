@@ -60,3 +60,20 @@ export function exitGroup(gid){
         }
     })
 }
+
+export function updateGroup(group){
+    return request({
+        url:'/group/updateGroup',
+        method:'PUT',
+        data:group
+    })
+}
+
+export function dissGroup(gid){
+    console.log(gid)
+    return request({
+        url:'/group/dissGroup',
+        method:'DELETE',
+        params:{gid}
+    })
+}

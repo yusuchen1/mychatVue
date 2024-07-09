@@ -1,18 +1,24 @@
 <template>
-    <div style="margin-top:10px;margin-left: 10px;">
-        <el-button class="l t" @click="openMessage()" type="primary" size="large" circle >消息</el-button>
-        <el-button class="l t" @click="$_makeGroup()" type="primary" size="large" circle >建群</el-button>
-        <el-button class="l t" @click="openAdd()" type="primary" size="large" circle >添加</el-button>
-        <el-dropdown class="l" style="width: 50px;margin-left:20px">
-        <el-avatar class="l" @click="t2()" style="width: 100px; height: 50px" :src="avatar" fit="cover"/>
+    <el-image
+        class="l"
+      style="width: auto; height: 100%"
+      src="https://sc-mychat.oss-cn-hangzhou.aliyuncs.com/preview.gif"
+      fit="fill"
+    />
+    <div class="container" style="margin-top:10px;margin-left: 10px;">
+        <el-dropdown class="r" style="width: 50px;margin-left:20px">
+        <el-avatar class="r" @click="t2()" style="width: 100px; height: 50px" :src="avatar" fit="cover"/>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="t2()">个人中心</el-dropdown-item>
-              <el-dropdown-item>朋友圈</el-dropdown-item>
+              <!-- <el-dropdown-item>朋友圈</el-dropdown-item> -->
               <el-dropdown-item @click="logOut()">退出登录</el-dropdown-item>
             </el-dropdown-menu> 
           </template>
         </el-dropdown>
+        <el-button class="r t" @click="openAdd()" type="primary" size="large" circle >添加</el-button>
+        <el-button style="margin-right:10px;" class="r t" @click="$_makeGroup()" type="primary" size="large" circle >建群</el-button>
+        <el-button class="r t" @click="openMessage()" type="primary" size="large" circle >消息</el-button>
     </div>
 
 
@@ -52,6 +58,7 @@ import { JsGetUserInfo } from '@/js/user';
 import GroupInfo from '@/components/groupInfo.vue'
 import { makeGroup } from '@/api/group';
 import { error, success } from '@/assets/message';
+
 
     const store = useStore();
     const router = useRouter();
@@ -109,6 +116,14 @@ import { error, success } from '@/assets/message';
     }
 
     function $_makeGroup(){
+        const groupInfo = store.state.groupInfo;
+        groupInfo.avatar = '';
+        groupInfo.number = '';
+        groupInfo.name = '';
+        groupInfo.num = 0;
+        groupInfo.makeUid = 0;
+        groupInfo.makeUsername = '';
+        groupInfo.id = 0;
         store.commit('setSmallDialogIndex',4);
         store.commit('reverseSmallDialogVisible');
     }
@@ -116,6 +131,20 @@ import { error, success } from '@/assets/message';
     //建群按钮点击效果
     const primaryBtClick = function(){
         const groupInfo = store.state.groupInfo;
+        const numberRegex = /^\d{6,20}$/;
+        const nameRegex = /^.{2,12}$/;
+        if(!numberRegex.test(groupInfo.number)){
+            error('群号应为6-20位数字');
+            return;
+        }
+        if(!nameRegex.test(groupInfo.name)){
+            error('群名长度应在2-12位之间');
+            return;
+        }
+        if(groupInfo.avatar == ''){
+            error('请上传头像');
+            return;
+        }
         makeGroup(groupInfo).then(resp =>{
             if(resp.data.code == 24200){
                 success(resp.data.message);
@@ -123,7 +152,10 @@ import { error, success } from '@/assets/message';
                 groupInfo.avatar = '';
                 groupInfo.number = '';
                 groupInfo.name = '';
+                groupInfo.num = 0;
+                groupInfo.makeUid = 0;
                 groupInfo.makeUsername = '';
+                groupInfo.id = 0;
             }else{
                 error(resp.data.message);
             }
@@ -131,10 +163,13 @@ import { error, success } from '@/assets/message';
     }
 </script>
 <style scoped>
-.l{
-    float: left;
+.r{
+    float: right;
 }
 .t{
     margin-top:5px;
+}
+.l{
+    float: left;
 }
 </style>

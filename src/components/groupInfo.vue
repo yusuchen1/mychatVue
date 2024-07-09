@@ -44,6 +44,7 @@
             </el-descriptions>    
         </div>
         <div class="btBlock" style="">
+            <el-button v-if="props.edit && props.primaryBtText == '保存'" type="danger" @click="sm2Visible = !sm2Visible">解散群聊</el-button>
             <el-button type="primary" @click="props.primaryBtClick" >{{ props.primaryBtText }}</el-button>
             <el-button v-if="props.edit" @click="store.commit('reverseSmallDialogVisible')" >取消</el-button>
         </div>
@@ -62,6 +63,20 @@
         </div>
       </template>
     </el-dialog>
+    
+    <el-dialog
+      v-model="sm2Visible"
+      width="350"
+    >
+      <h1 style="color: red">警告</h1>
+      <span style="font-size:17px">确定解散群聊吗。</span>
+      <template #footer>
+        <div>
+          <el-button type="primary" @click="$_dissGroup(groupInfo.id)" size="45%">确定</el-button>
+          <el-button @click="sm2Visible = !sm2Visible" >取消</el-button>
+        </div>
+      </template>
+    </el-dialog>
 
     <DefaultDrawer v-if="defaultDrawerIndex == 2" :darwer="defaultDrawer" direction="rtl" :title="groupInfo.name" size="45%">
         <GroupMember />
@@ -69,7 +84,7 @@
 </template>
 
 <script setup>
-import { exitGroup } from '@/api/group';
+import { exitGroup,dissGroup } from '@/api/group';
 import { error, success } from '@/assets/message';
 import {defineProps,reactive,computed,ref} from 'vue';
 import {useStore} from 'vuex';
@@ -82,6 +97,7 @@ import { getGroupMember } from '@/api/crony';
     const props = defineProps(['edit','primaryBtText','primaryBtClick']) 
     const jwt = sessionStorage.getItem('jwt');
     const smVisible = ref(false);
+    const sm2Visible = ref(false);
     const defaultDrawerIndex = computed(() => store.state.defaultDrawerIndex)
     const defaultDrawer = computed(() => store.state.defaultDrawerVisible);
 
@@ -125,6 +141,10 @@ import { getGroupMember } from '@/api/crony';
     }
 
     function SeeMember(gid){
+        if(gid == null || gid == ''){
+            error("该群还没有成员哦");
+            return;
+        }
         store.commit('setDefaultDrawerIndex',2);
         getGroupMember(gid).then(resp => {
             if(resp.data.code == 24200){
@@ -132,6 +152,19 @@ import { getGroupMember } from '@/api/crony';
                 store.commit('reverseDefaultDrawerVisible')
             }else{
                 error(resp.data.message)
+            }
+        })
+    }
+
+    function $_dissGroup(gid){
+        dissGroup(gid).then(resp => {
+            if(resp.data.code == 24200){
+                success(resp.data.message);
+                store.commit('updateLeftMenuDelGroup',gid);
+                sm2Visible.value = !sm2Visible.value;
+                store.commit('reverseSmallDialogVisible');
+            }else{
+                error(resp.data.message);
             }
         })
     }

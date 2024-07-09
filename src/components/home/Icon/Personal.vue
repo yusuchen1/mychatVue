@@ -64,7 +64,7 @@
     </SmallDialog>
     
     <SmallDialog v-if="smallDialogIndex == 3" :isVisible="smallDialogVisible">
-        <div style="height: 200px;overflow:hidden">
+        <div style="height: 200px;overflow:auto">
             <el-card type="info" v-for="cronyGroup in cronyGroups" style="width: 50%;height: 40px;float:left">
                 <div style="margin-top:-10px">
                     <p style="float: left;font-size: 15px;">
@@ -77,7 +77,7 @@
     </SmallDialog>
     
     <SmallDialogT v-if="smallDialogTIndex == 1" :isVisible="smallDialogTVisible">
-        <div style="height: 200px;overflow:hidden;">
+        <div style="height: 200px;overflow:auto;">
             <el-card type="info" v-for="group in groups" style="width: 100%;float:left">
                 <div style="margin-left:-10px">
                     <el-avatar class="l" :src="group.avatar" :size="90" />
@@ -112,7 +112,7 @@ import { error, success } from '@/assets/message';
 import { updatePassword } from '@/api/user';
 import { deleteCronyGroup, getAllCronyGroup } from '@/api/crony';
 import {Delete} from '@element-plus/icons-vue'
-import { getGroupInfo, getGroupsM } from '@/api/group';
+import { getGroupInfo, getGroupsM,updateGroup } from '@/api/group';
 import GroupInfo from '@/components/groupInfo.vue';
 
     const passwordModel = reactive({
@@ -160,6 +160,16 @@ import GroupInfo from '@/components/groupInfo.vue';
   }
 
   function $_save(){
+    const nicknameRegex = /^.{2,}$/;
+    const phoneRegex = /^\d{11}$/;
+    if(!nicknameRegex.test(userInfo.value.nickname)){
+        error("昵称长度至少为2");
+        return;
+    }
+    if(!phoneRegex.test(userInfo.value.phone)){
+        error("电话号码为11位整数");
+        return;
+    }
     JsUpdateUserInfo();
     store.commit("reverseDefaultDialogVisible");
   }
@@ -172,6 +182,11 @@ import GroupInfo from '@/components/groupInfo.vue';
   }
 
   function submitPassword(){
+    const passwordRegex = /^.{6,20}$/;
+    if(!passwordRegex.test(passwordModel.newPassword)){
+        error("新密码应在6-20位之间");
+        return;
+    }
     // 如果用户输入新密码与确认密码不一致则打印该语句
     if(passwordModel.newPassword != passwordModel.againPassword){
         error("两次输入的密码不一致");
@@ -247,7 +262,25 @@ import GroupInfo from '@/components/groupInfo.vue';
   }
 
   const groupInfoSave = function(){
-
+    let groupInfo = store.state.groupInfo;
+    const numberRegex = /^\d{6,20}$/;
+    const nameRegex = /^.{2,12}$/;
+    if(!numberRegex.test(groupInfo.number)){
+        error('群号应为6-20位数字');
+        return;
+    }
+    if(!nameRegex.test(groupInfo.name)){
+        error('群名长度应在2-12位之间');
+        return;
+    }
+    updateGroup(groupInfo).then(resp => {
+        if(resp.data.code == 24200){
+            success(resp.data.message);
+            store.commit('reverseSmallDialogVisible');
+        }else{
+            error(resp.data.message)
+        }
+    })
   }
 </script>
 

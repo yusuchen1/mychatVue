@@ -3,9 +3,9 @@
         <div class="leftMenu">
             <LeftMenu />
         </div>
-        <div class="topMenu">
+        <!-- <div class="topMenu">
             <TopMenu />
-        </div>
+        </div> -->
         <div class="iconMenu">
             <IconMenu />
         </div>
@@ -21,8 +21,7 @@ import LeftMenu from './home/LeftMenu.vue';
 import TopMenu from './home/TopMenu.vue';
 import IconMenu from './home/IconMenu.vue';
 import {useStore} from 'vuex'
-import { ref,reactive,computed,onMounted } from 'vue'
-import {error,success} from '../assets/message.js';
+import {onMounted } from 'vue'
 import { JsGetLeftMenu } from '@/js/common';
 import { JsGetAvatar } from '@/js/user';
 
@@ -70,21 +69,24 @@ import { JsGetAvatar } from '@/js/user';
     height: 100vh;
     width: 30vh;
 }
-.topMenu {
+/* .topMenu {
     float: left;
     width: 69%;
     height: 10%;
+} */
+.iconMenu {
+    float: left;
+    width: 85%;
+    height: 10%;
+    background-color: rgb(252, 211, 217)
 }
 .context {
     float: left;
     width:85%;
     height: 90%;
-    background-color: aqua;
-}
-.iconMenu {
-    float: left;
-    width: 16%;
-    height: 10%;
-    background-color: greenyellow;
+    /* background-color: aqua; */
+    background-image: url("https://sc-mychat.oss-cn-hangzhou.aliyuncs.com/chat-backgroup.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 </style>

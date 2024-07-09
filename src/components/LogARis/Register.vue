@@ -30,42 +30,70 @@
     </Index>
 </template>
 <script setup>
-import {ref,reactive} from 'vue'
-import Index from '../index.vue'
-import "../../assets/common.css"
-import {useRouter} from 'vue-router'
-import {register} from '../../api/user.js'
-import {success,error} from '../../assets/message.js'
+import { ref, reactive, watch } from 'vue';
+import Index from '../index.vue';
+import "../../assets/common.css";
+import { useRouter } from 'vue-router';
+import { register } from '../../api/user.js';
+import { success, error } from '../../assets/message.js';
 
-    const password2 = ref('');
-    const router = useRouter();
+const password2 = ref('');
+const router = useRouter();
 
-    const registerUser = reactive({
-        nickname:'',
-        username:'',
-        password:'',
-        sex:'男',
-        phone:''
-    });
+const registerUser = reactive({
+    nickname: '',
+    username: '',
+    password: '',
+    sex: '男',
+    phone: ''
+});
 
-    function registerc(){
-        // console.log(registerUser.nickname);
-        // console.log(registerUser.username);
-        // console.log(registerUser.password);
-        // console.log(password2);
-        // console.log(registerUser.sex);
-        // console.log(registerUser.phone);
+// 正则表达式校验
+const validateFields = () => {
+    const usernameRegex = /^[a-zA-Z0-9]{4,20}$/;
+    const passwordRegex = /^.{6,20}$/;
+    const nicknameRegex = /^.{2,}$/;
+    const phoneRegex = /^\d{11}$/;
+
+    if (!usernameRegex.test(registerUser.username)) {
+        error('账号长度必须在4到20位之间，且只能包含字母和数字');
+        return false;
+    }
+    if (!passwordRegex.test(registerUser.password)) {
+        error('密码长度必须在6到20位之间');
+        return false;
+    }
+    if (registerUser.password !== password2.value) {
+        error('两次输入的密码不一致');
+        return false;
+    }
+    if (!nicknameRegex.test(registerUser.nickname)) {
+        error('昵称长度至少为2');
+        return false;
+    }
+    if (!phoneRegex.test(registerUser.phone)) {
+        error('电话号码必须为11位数字');
+        return false;
+    }
+    return true;
+};
+
+// 监听提交事件
+function registerc() {
+    if (validateFields()) {
+        // 如果校验通过，则执行注册逻辑
         console.log(registerUser);
         register(registerUser).then(resp => {
             console.log(resp.data);
-            if(resp.data.code == 24200){
+            if (resp.data.code == 24200) {
                 success(resp.data.message);
-                router.push('/login')
-            }else{
-                error(resp.data.message)
+                router.push('/login');
+            } else {
+                error(resp.data.message);
             }
-        })
+        });
     }
+}
 
     function j2login(){
         router.push("/login")

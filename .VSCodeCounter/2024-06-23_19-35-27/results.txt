@@ -1,0 +1,78 @@
+Date : 2024-06-23 19:35:27
+Directory : d:\大学个人文件\个人\mychat\vue\mychat\src
+Total : 38 files,  2611 codes, 58 comments, 274 blanks, all 2943 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| vue        |         19 |      1,636 |          8 |        188 |      1,832 |
+| JavaScript |         15 |        870 |         48 |         64 |        982 |
+| CSS        |          3 |        104 |          2 |         21 |        127 |
+| XML        |          1 |          1 |          0 |          1 |          2 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                    | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                       |         38 |      2,611 |         58 |        274 |      2,943 |
+| . (Files)                                                               |          2 |         40 |          0 |         12 |         52 |
+| api                                                                     |          7 |        274 |          4 |         33 |        311 |
+| assets                                                                  |          5 |        134 |          2 |         26 |        162 |
+| components                                                              |         18 |      1,618 |          8 |        185 |      1,811 |
+| components (Files)                                                      |          4 |        385 |          0 |         46 |        431 |
+| components\LogARis                                                      |          2 |        134 |          0 |         11 |        145 |
+| components\common                                                       |          4 |         76 |          0 |         24 |        100 |
+| components\home                                                         |          8 |      1,023 |          8 |        104 |      1,135 |
+| components\home (Files)                                                 |          5 |        535 |          8 |         63 |        606 |
+| components\home\Icon                                                    |          3 |        488 |          0 |         41 |        529 |
+| js                                                                      |          4 |        156 |          3 |         13 |        172 |
+| router                                                                  |          1 |         30 |         10 |          3 |         43 |
+| store                                                                   |          1 |        359 |         31 |          2 |        392 |
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                | language   | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\大学个人文件\个人\mychat\vue\mychat\src\App.vue                              | vue        |         18 |          0 |          3 |         21 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\axios.js                         | JavaScript |         29 |          3 |          4 |         36 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\chat.js                          | JavaScript |         24 |          0 |          3 |         27 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\common.js                        | JavaScript |          0 |          0 |          1 |          1 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\crony.js                         | JavaScript |         86 |          1 |         10 |         97 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\group.js                         | JavaScript |         56 |          0 |          6 |         62 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\home.js                          | JavaScript |          7 |          0 |          1 |          8 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\api\user.js                          | JavaScript |         72 |          0 |          8 |         80 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\assets\base.css                      | CSS        |         71 |          2 |         14 |         87 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\assets\common.css                    | CSS        |          3 |          0 |          1 |          4 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\assets\logo.svg                      | XML        |          1 |          0 |          1 |          2 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\assets\main.css                      | CSS        |         30 |          0 |          6 |         36 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\assets\message.js                    | JavaScript |         29 |          0 |          4 |         33 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\LogARis\Login.vue         | vue        |         60 |          0 |          7 |         67 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\LogARis\Register.vue      | vue        |         74 |          0 |          4 |         78 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\UserInfo.vue              | vue        |        140 |          0 |         17 |        157 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\common\DefaultDialog.vue  | vue        |         16 |          0 |          7 |         23 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\common\DefaultDrawer.vue  | vue        |         28 |          0 |          1 |         29 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\common\SmallDialog.vue    | vue        |         16 |          0 |          8 |         24 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\common\SmallDialogT.vue   | vue        |         16 |          0 |          8 |         24 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\groupInfo.vue             | vue        |        133 |          0 |         20 |        153 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home.vue                  | vue        |         83 |          0 |          7 |         90 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\Context.vue          | vue        |        164 |          0 |         15 |        179 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\GroupMember.vue      | vue        |         91 |          4 |         11 |        106 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\IconMenu.vue         | vue        |        116 |          3 |         21 |        140 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\Icon\AddFrom.vue     | vue        |        155 |          0 |         12 |        167 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\Icon\MessageFrom.vue | vue        |         75 |          0 |          7 |         82 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\Icon\Personal.vue    | vue        |        258 |          0 |         22 |        280 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\LeftMenu.vue         | vue        |        128 |          1 |         15 |        144 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\home\TopMenu.vue          | vue        |         36 |          0 |          1 |         37 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\components\index.vue                 | vue        |         29 |          0 |          2 |         31 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\js\common.js                         | JavaScript |         12 |          0 |          2 |         14 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\js\crony.js                          | JavaScript |         83 |          1 |          4 |         88 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\js\user.js                           | JavaScript |         55 |          2 |          6 |         63 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\js\webSocket.js                      | JavaScript |          6 |          0 |          1 |          7 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\main.js                              | JavaScript |         22 |          0 |          9 |         31 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\router\index.js                      | JavaScript |         30 |         10 |          3 |         43 |
+| d:\大学个人文件\个人\mychat\vue\mychat\src\store\index.js                       | JavaScript |        359 |         31 |          2 |        392 |
+| Total                                                                   |            |      2,611 |         58 |        274 |      2,943 |
++-------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import router from '../router'
-import {error} from '../assets/message.js'
+import {error, success} from '../assets/message.js'
+import { ElMessage } from 'element-plus'
 
 const request = axios.create({
     baseURL:'/api/',
@@ -30,6 +31,19 @@ request.interceptors.response.use(
             router.push('/login');
         }
         return response;
+    },
+    error => {
+        // 错误响应的处理
+        if (error.response && error.response.status === 401) {
+            ElMessage({
+                message: "请登录后重试",
+                type:'error',
+                plain:true,
+            })
+            // 用户未登录或登录过期
+            router.push('/login');
+        }
+        return Promise.reject(error);
     }
 )
 
