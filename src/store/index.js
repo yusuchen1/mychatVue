@@ -1,6 +1,7 @@
 import {createStore} from 'vuex'
 import {selectChat,selectGroupChat} from '../api/chat.js'
 import { reactive } from 'vue';
+import { error, success } from '@/assets/message.js';
 
 const store = createStore({
     state:{
@@ -102,32 +103,9 @@ const store = createStore({
                                       "me": true
                                     }
                                   ]
-                        },
-                        // {
-                        //     id:'1',
-                        //     avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
-                        //     name:'丁真',
-                        //     nmessage:'知识学爆'
-                        // }
+                        }
                     ]
                 }
-                // ,{
-                //     groupName:'哥们',
-                //     cronys:[
-                //         {
-                //             id:'2',
-                //             avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
-                //             name:'龟儿',
-                //             nmessage:'网吧'
-                //         },
-                //         {
-                //             id:'3',
-                //             avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
-                //             name:'龟孙',
-                //             nmessage:'上号'
-                //         }
-                //     ]
-                // }
             ],
         },
         nowChatId:'',
@@ -139,6 +117,10 @@ const store = createStore({
         ws:'',
         defaultDrawerVisible:false,
         otherInfo:{
+        },
+        editMoment:{
+            id:'',
+            content:''
         },
         userMessage:{},
         avatar:'https://sc-canqiong.oss-cn-hangzhou.aliyuncs.com/defaultAvatar.jpg',
@@ -155,7 +137,8 @@ const store = createStore({
             name:'',
             makeUsername:''
         },
-        groupMembers:[]
+        groupMembers:[],
+        moments:[]
     },
     mutations: {
         setJwt:(state,jwt) => {
@@ -314,6 +297,59 @@ const store = createStore({
             }
         },updateLeftMenuDelGroup:(state, gid) => {
             state.leftMenuList.groups = state.leftMenuList.groups.filter(group => group.id != gid);
+        },setEditMoment:(state, editMoment) => {
+            state.editMoment = editMoment;
+        },setMoments:(state,moments) => {
+            state.moments = moments
+        },deleteMomentById:(state, id) => {
+            state.moments = state.moments.filter(moment => moment.id != id);
+        },updateMomentsLikList:(state,midAndName) => {
+            console.log(midAndName.momentId)
+
+            let likelist = state.moments.filter(moment => moment.id == midAndName.momentId)[0].likelist;
+
+            let temp = likelist.filter(like => like.nickname == midAndName.nickname);
+            if(temp.length == 0){
+                success('点赞成功');
+                likelist.push({
+                    id:'',
+                    userId:'',
+                    nickname:midAndName.nickname
+                })
+            }else{
+                success('已取消点赞');
+                state.moments.filter(moment => moment.id == midAndName.momentId)[0].likelist = likelist.filter(like => {
+                    return like.nickname != midAndName.nickname;
+                });
+            }
+        },updateComments:(state,midAndNameAndContent) => {
+            let moment = state.moments.filter(moment => {
+                return moment.id == midAndNameAndContent.momentId
+            })[0];
+            let comments = moment.comments;
+            comments.push({
+                id:midAndNameAndContent.commentId,
+                userId:midAndNameAndContent.userId,
+                nickname:midAndNameAndContent.nickname,
+                replayNickname:midAndNameAndContent.replayNickname,
+                content:midAndNameAndContent.content
+            })
+            moment.input = '';
+        },deleteComment:(state,midAndCid) => {
+            let moment = state.moments.filter(moment =>  moment.id == midAndCid.momentId)[0];
+            moment.comments = moment.comments.filter(comment => comment.id != midAndCid.commentId);
+        },updateLeftMenuDelChat: (state, chatId) => {
+            // 遍历群聊
+            state.leftMenuList.groups.forEach(group => {
+                group.chats = group.chats.filter(chat => chat.id !== chatId);
+            });
+        
+            // 遍历好友
+            state.leftMenuList.cronyGroups.forEach(cronyGroup => {
+                cronyGroup.cronys.forEach(crony => {
+                    crony.chats = crony.chats.filter(chat => chat.id !== chatId);
+                });
+            });
         }
     },
     actions: {

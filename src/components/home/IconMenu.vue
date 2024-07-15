@@ -4,14 +4,17 @@
       style="width: auto; height: 100%"
       src="https://sc-mychat.oss-cn-hangzhou.aliyuncs.com/preview.gif"
       fit="fill"
-    />
+      />
+      <!-- src="/images/preview.gif" -->
+
+
     <div class="container" style="margin-top:10px;margin-left: 10px;">
         <el-dropdown class="r" style="width: 50px;margin-left:20px">
         <el-avatar class="r" @click="t2()" style="width: 100px; height: 50px" :src="avatar" fit="cover"/>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="t2()">个人中心</el-dropdown-item>
-              <!-- <el-dropdown-item>朋友圈</el-dropdown-item> -->
+              <el-dropdown-item @click="j2moments()">朋友圈</el-dropdown-item>
               <el-dropdown-item @click="logOut()">退出登录</el-dropdown-item>
             </el-dropdown-menu> 
           </template>
@@ -91,7 +94,7 @@ import { error, success } from '@/assets/message';
 
     function logOut(){
         store.commit('setJwt', '');
-        router.push('/login');
+        router.push('/index/login');
     }
 
     // 点击添加打开添加抽屉
@@ -160,6 +163,11 @@ import { error, success } from '@/assets/message';
                 error(resp.data.message);
             }
         });
+    }
+
+
+    function j2moments(){
+        router.push("/moments")
     }
 </script>
 <style scoped>

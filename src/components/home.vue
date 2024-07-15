@@ -84,8 +84,8 @@ import { JsGetAvatar } from '@/js/user';
     float: left;
     width:85%;
     height: 90%;
-    /* background-color: aqua; */
     background-image: url("https://sc-mychat.oss-cn-hangzhou.aliyuncs.com/chat-backgroup.jpg");
+    /* background-image: url("/images/chat-backgroup.jpg"); */
     background-repeat: no-repeat;
     background-size: 100% 100%;
 }

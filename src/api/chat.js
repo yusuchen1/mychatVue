@@ -25,3 +25,14 @@ export function sendMessage(mess){
         }
     })
 }
+
+
+export function delChat(chatId){
+    return request({
+        url:'/chat/delChat',
+        method: 'DELETE',
+        params: {
+            chatId
+        }
+    })
+}

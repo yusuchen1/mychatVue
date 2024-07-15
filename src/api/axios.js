@@ -28,7 +28,7 @@ request.interceptors.response.use(
         // 用户未登录
         if(response.data.code == 24403){
             error(response.data.message)
-            router.push('/login');
+            router.push('/index/login');
         }
         return response;
     },
@@ -41,7 +41,7 @@ request.interceptors.response.use(
                 plain:true,
             })
             // 用户未登录或登录过期
-            router.push('/login');
+            router.push('/index/login');
         }
         return Promise.reject(error);
     }

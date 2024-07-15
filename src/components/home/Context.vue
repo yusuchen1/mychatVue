@@ -11,7 +11,20 @@
             </div>
             <div class="chat-bubble me r" v-else style="margin-left: 20px;position: relative;right:-30px;top:10px">
                 <div class="bubble-arrow" />
-                <p>{{chat.content}}</p>
+                <p>
+                    <el-popover
+                        placement="top-start"
+                      >
+                        <template #reference>
+                          <!-- <el-button class="m-2">Hover to activate</el-button> -->
+                            {{chat.content}}
+                        </template>
+                        <span style="font-size:12px">
+                            不超过2分钟的消息可被撤回。
+                            <el-button type="" @click="$_delChat(chat.id)" > 撤回</el-button>
+                        </span>
+                      </el-popover>
+                </p>
             </div>
         </div>
         <div>
@@ -25,9 +38,17 @@
             <div style="float:right;margin-top: 20px;margin-right: 20px;">
                 <el-button @click="resetMess()">清空</el-button>
                 <el-button @click="sendMess()" type="primary">发送</el-button>
+                <el-button @click="openEmojiDialog">😊</el-button>
             </div>
         </div>
     </div>
+
+    <el-dialog title="选择表情" v-model="emojiDialogVisible">
+        <Emoji :mess="mess" @update-mess="updateMessContent" />
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="emojiDialogVisible = false">关闭</el-button>
+        </span>
+    </el-dialog>
 
     <DefaultDialog v-if="defaultDialogIndex == 2" :isVisible="isVisible">
         <UserInfo />
@@ -36,13 +57,13 @@
 
 <script setup>
 import { ref, reactive, computed, watch, nextTick } from 'vue';
-import { sendMessage } from '../../api/chat.js';
+import { delChat, sendMessage } from '../../api/chat.js';
 import { useStore } from 'vuex';
 import { success, error } from '../../assets/message.js';
 import { JsGetOtherInfo } from '@/js/user.js';
 import UserInfo from '../UserInfo.vue';
 import DefaultDialog from '../common/DefaultDialog.vue';
-import { JsUpdataCronyInfo } from '@/js/crony.js';
+import Emoji from './emoji.vue'
 
 const store = useStore();
 const mess = reactive({
@@ -51,9 +72,18 @@ const mess = reactive({
     content: ''
 });
 
+const updateMessContent = (newContent) => {
+  mess.content = newContent;
+  emojiDialogVisible.value = false;
+};
+
 function sendMess() {
     if (mess.receiveUid == '' && mess.groupId == '') {
         error("请选择你要发送的对象");
+        return;
+    }
+    if(mess.content == '') {
+        error('请不要发送空数据');
         return;
     }
     sendMessage(mess).then(resp => {
@@ -100,6 +130,23 @@ const defaultDialogIndex = computed(() => store.state.defaultDialogIndex);
 function chatAvaClick(uid) {
     store.commit('setDefaultDialogIndex', 2);
     JsGetOtherInfo(uid);
+}
+
+const emojiDialogVisible = ref(false);
+
+const openEmojiDialog = () => {
+    emojiDialogVisible.value = true;
+};
+
+function $_delChat(id){
+    delChat(id).then(resp => {
+        if(resp.data.code == 24200){
+            success(resp.data.message);
+            store.commit('updateLeftMenuDelChat',id);
+        }else{
+            error(resp.data.message);
+        }
+    })
 }
 </script>
 
@@ -174,5 +221,14 @@ function chatAvaClick(uid) {
     border-right: 15px solid transparent;
     right: -25px;
     top: 5px;
+}
+.emoji-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.emoji-grid span {
+    cursor: pointer;
+    font-size: 24px;
 }
 </style>

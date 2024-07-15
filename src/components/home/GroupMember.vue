@@ -76,6 +76,7 @@ import { joinGroup, searchGroup } from '@/api/group.js';
     function cronyChat(uid){
         store.commit('j2CronyChat',uid);
         store.commit('reverseDefaultDrawerVisible')
+        store.commit('reverseSmallDialogVisible');
     }
 
     function groupChat(gid){
