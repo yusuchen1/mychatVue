@@ -52,7 +52,8 @@ const store = createStore({
                                         31
                                       ],
                                       "content": "咳咳",
-                                      "me": false
+                                      "me": false,
+                                      online:false
                         }
                     ]
                 }
@@ -102,7 +103,8 @@ const store = createStore({
                                       "content": "麻麻省的",
                                       "me": true
                                     }
-                                  ]
+                                  ],
+                                  online:false
                         }
                     ]
                 }
@@ -350,6 +352,15 @@ const store = createStore({
                     crony.chats = crony.chats.filter(chat => chat.id !== chatId);
                 });
             });
+        },
+        updateOnline:(state,onlineInfo) => {
+            state.leftMenuList.cronyGroups.forEach(cronyGroup => {
+                cronyGroup.cronys.forEach(crony => {
+                    if(crony.id == onlineInfo.userId){
+                        crony.online = onlineInfo.online;
+                    }
+                })
+            })
         }
     },
     actions: {

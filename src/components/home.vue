@@ -41,6 +41,8 @@ import { JsGetAvatar } from '@/js/user';
             const data = JSON.parse(e.data);
             if(data.message == '聊天消息'){
                 store.commit('setChats',data.data)
+            }else if(data.message == 'online信息'){
+                store.commit('updateOnline',data.data)
             }
         };
 
